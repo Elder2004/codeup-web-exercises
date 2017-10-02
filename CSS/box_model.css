@@ -8,27 +8,27 @@
     color: white;
 }
 
-#redbox {
+.redbox {
     background-color: red;
 }
 
-#orangebox {
+.orangebox {
     background-color: orange;
     margin-left: 30px;
 }
-#goldbox {
+.goldbox {
     background-color: gold;
     margin-left: 60px;
 }
-#greenbox {
+.greenbox {
     background-color: green;
     margin-left: 90px;
 }
-#purplebox {
+.purplebox {
     background-color: purple;
     margin-left: 120px;
 }
-#pinkbox {
+.pinkbox {
     background-color: pink;
     margin-left: 150px;
 }

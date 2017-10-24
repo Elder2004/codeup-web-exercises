@@ -1,4 +1,6 @@
-"use strict";
+
+    "use strict";
+
 
 /**
  * TODO:
@@ -71,8 +73,10 @@
  * Example:
  * > calculateTip(0.20, 20) // returns 4
  */
-      // function calculateTip() {}
-     //   var
+       function calculateTip(TipDecimal, totalBill) {
+           return TipDecimal * totalBill;
+        }
+        console.log(calculateTip(.20,20));
 
 
 
@@ -82,3 +86,6 @@
  * prompt the user for the bill total and a percentage they would like to tip,
  * then display the dollar amount they should tip
  */
+    var totalBill = prompt("amount of total bill?");
+    var tipDecimal = prompt("Percentage Used");
+    alert("Amount of tip is " + calculateTip(tipDecimal,totalBill));

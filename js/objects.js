@@ -84,14 +84,6 @@
     //         }
     //     },
     //     {
-    //          title: "Pashmina",
-    //
-    //          author: {
-    //              firstName: "Nidhi",
-    //              lastName: "Chanani"
-    //          }
-    //      },
-    //     {
     //         title: "This is Our Constitution",
     //
     //          author: {

@@ -1,0 +1,46 @@
+/* CSS */
+
+.container {
+    margin: 0 auto;
+    width: 80%;
+    max-width: 1200px;
+    min-height: 100vh;
+}
+    .row {
+        width: 100%;
+    }
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+    .one-whole,
+    .two-thirds,
+    .one-half,
+    .one-third,
+    .one-fourth,
+    .one-eighth {
+        float: left;
+        width: 100%;
+    }
+    @media screen  and (min-width: 768px) {
+        .two-thirds {
+            width: 66.7%;}
+        .one-half {
+            width: 50%;
+        }
+
+        .one-third {
+            width: 33.3%;
+        }
+
+        .one-fourth {
+            width: 25%;
+        }
+
+        .one-eighth {
+            width: 12.5%;
+            float: left;
+
+    }
+        }

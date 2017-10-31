@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Konami Code</title>
+    <style>
+
+        div {
+            background-color: greenyellow;
+            width: 100px;
+            border: 1px solid green;
+        }
+
+    </style>
+</head>
+<body>
+<h1></                                                                                                                 h1>
+<button id="go">&raquo; Run</button>
+<div id="block">Enter The Konami Codes</div>
+    <script src="js/jquery-2.2.4.js"></script>
+    <script>
+    "use strict";
+
+
+        $( "#go" ).click(function() {
+
+
+            $( "#block" ).animate({
+                left: '250px',
+                width: "80%",
+                opacity: 1.0,
+                marginLeft: "0.8in",
+                fontSize: "6em",
+                borderWidth: "10px"
+            }, 1500 ).slideUp(6000).slideDown(6000);
+        });
+        $(document).keyup(function(event){
+
+
+        })
+
+
+    </script>
+
+</body>
+</html>

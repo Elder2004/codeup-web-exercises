@@ -9,7 +9,7 @@
    );
 });
 
-$('div').dbclick(function() {
+$('h1').dbclick(function() {
     $(this).css('font-size', '18px)';
     alert('paragraph  was double clicked!');
 });

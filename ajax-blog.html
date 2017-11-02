@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax Blog</title>
+</head>
+<body>
+    <div class="container">
+    <div id="posts"></div>
+
+</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+<script>
+    (function() {
+        "use strict";
+
+        var blankDiv = $("#posts");
+
+        $.get("data/blog.json")
+            .done(function(data) {
+                var html = "";
+
+                data.forEach(function(myBlog) {
+                    html += "<h2>" + myBlog.title   + "</h2>\n" +
+                        "<p>"      + myBlog.content + "</p>\n" +
+                        "<span>"   + myBlog.date +    "</span>\n" +
+                        "<span>"   + myBlog.categories + "</span>";
+
+                });
+
+                blankDiv.append(html);
+
+            });
+    })();
+</script>
+
+
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map Filter Reduce</title>
+</head>
+<body>
+<script>
+    const users = [
+        {
+            id: 1,
+            name: 'ryan',
+            email: 'ryan@codeup.com',
+            languages: ['clojure', 'javascript'],
+        },
+        {
+            id: 2,
+            name: 'luis',
+            email: 'luis@codeup.com',
+            languages: ['java', 'scala', 'php'],
+        },
+        {
+            id: 3,
+            name: 'zach',
+            email: 'zach@codeup.com',
+            languages: ['javascript', 'bash'],
+        },
+        {
+            id: 4,
+            name: 'fernando',
+            email: 'fernando@codeup.com',
+            languages: ['java', 'php', 'sql'],
+        },
+        {
+            id: 5,
+            name: 'justin',
+            email: 'justin@codeup.com',
+            languages: ['html', 'css', 'javascript', 'php'],
+        },
+    ];
+//
+//
+        let threeLanguages = users.filter(user => {
+            if (user.languages.length > 2){
+
+                return true;
+            }
+        }); {
+
+          console.log(threeLanguages);
+    }
+//
+//
+     const usersEmail = users.map(user =>{
+         console.log(user.email);
+         return user.email
+     });
+//
+//
+     const objectKeys = users.reduce((accumulator, user) =>{
+         accumulator[user.id] = user;
+         return accumulator;
+     }, {});
+    console.log(objectKeys);
+
+</script>
+</body>
+</html>

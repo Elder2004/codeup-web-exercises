@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    "use Strict";
+
+    const wait = (millseconds) => {
+        const oldPromise = new Promise((resolve, reject) => {
+            setTimeout(resolve, millseconds);
+        });
+        return oldPromise;
+    };
+    wait(1000).then(() => console.log('You\'ll see this after 1 second'));
+    wait(3000).then(() => console.log('You\'ll see this after 3 seconds'));
+
+//    fetch(url, {headers: {'Authorization': '30e61c31acc090bc069202657196e8a341730307'}})
+
+
+</script>
+</body>
+</html>

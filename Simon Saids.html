@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="js/jquery-2.2.4.js"></script>
+
+<!-- Bootstrap CSS -->
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Custom CSS -->
+<link rel="stylesheet" type="text/css" href="#">
+<head>
+    <meta charset="UTF-8">
+    <title>Simon</title>
+    <style>
+        body {
+            background: url("http://cdn.backgroundhost.com/backgrounds/subtlepatterns/purty_wood.png");
+            font-family: 'Righteous', Palatino;
+            color: black;
+        }
+
+        .container {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 70px;
+        }
+
+        .simonBoard {
+            margin: 0 auto;
+            margin-top: 50px;
+            border: solid 10px black;
+            width: 600px;
+            height: 600px;
+            border-radius: 600px;
+            box-shadow: -10px 10px 7px 0px rgba(50, 50, 50, 0.75);
+        }
+
+        .pad {
+            margin: 0;
+            float: left;
+            position: relative;
+            width: 290px;
+            height: 290px;
+            z-index: 8;
+            border: 5px solid black;
+        }
+
+        .green {
+            background-color:#0a0;
+            -moz-border-radius: 300px 0 0 0;
+            border-radius: 300px 0 0 0;
+        }
+
+        .green-active {
+            background-color: darkgreen !important;
+        }
+
+        .red {
+            background-color: red;
+            -moz-border-radius: 0 300px 0 0;
+            border-radius: 0 300px 0 0;
+        }
+
+        .red-active {
+            background-color: darkred !important;
+        }
+
+        .yellow {
+            background-color: yellow;
+            -moz-border-radius: 0 0 0 300px;
+            border-radius: 0 0 0 300px;
+        }
+
+        .yellow-active {
+            background-color: #e6d47e !important;
+        }
+
+        .blue {
+            background-color: blue;
+            -moz-border-radius: 0 0 300px 0;
+            border-radius: 0 0 300px 0;
+        }
+
+        .blue-active {
+            background-color: darkblue !important;
+        }
+
+        .board-controls {
+            border: 15px solid black;
+            height: 260px;
+            width: 260px;
+            border-radius: 150px;
+            background-color: white;
+            clear: both;
+            position: absolute;
+            z-index: 10;
+            margin-top: 160px;
+            margin-left: 160px;
+            -webkit-box-shadow: -6px 8px 5px 0px rgba(50, 50, 50, 0.75);
+        }
+
+        .title {
+            font-size: 45px;
+            margin-top: 30px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .inline {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .display {
+            border: solid 2px black;
+            border-radius: 10px;
+            color: white;
+            width: 60px;
+            height: 45px;
+            font-size: 40px;
+            background-color: #342626;
+        }
+
+        .start, .strict {
+            text-align: center;
+            margin: 0;
+            margin-left: 20px;
+            border: solid 3px black;
+            width: 55px;
+            height: 55px;
+            border-radius: 30px;
+            color: black;
+            line-height: 55px;
+        }
+
+        .start {
+            background-color: darkred;
+        }
+
+        .strict {
+            background-color: yellow;
+        }
+
+        .switch-container {
+            margin-top: 10px;
+        }
+
+        .outter-switch {
+            border: solid 2px black;
+            width: 60px;
+            height: 25px;
+            background-color: black;
+        }
+
+        .outter-active {
+            background-color: gray !important;
+        }
+
+        .inner-switch {
+            background-color: gray;
+            width: 30px;
+            height: 25px;
+            position: relative !important;
+        }
+
+        .inner-inactive {
+            background-color: black !important;
+        }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1></h1>
+    </div>
+    <div class="simonBoard">
+        <div id="0" class="pad green"></div>
+        <div id="1" class="pad red"></div>
+        <div id="2" class="pad yellow"></div>
+        <div id="3" class="pad blue"></div>
+        <div class="board-controls">
+            <div class="title">SIMON</div>
+            <div class="display inline">00</div>
+            <div class="start inline">START</div>
+            <div class="strict inline">STRICT</div>
+            <div class="switch-container">
+                <p class="off inline">OFF</p>
+                <div class="switch outter-switch inline"><div class="inner-switch"></div></div>
+                <p class="on inline">ON</p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //variables
+    userSeq = [];
+    simonSeq = [];
+    const NUM_OF_LEVELS = 20;
+    var id, color, level = 0;
+    var strict = false;
+    var error = false;
+    var gameOn = false; //switch to turn game on or off
+    var boardSound = [
+        "http://www.soundjay.com/button/sounds/button-4.mp3", //green
+        "http://www.soundjay.com/button/sounds/button-09.mp3", //red
+        "http://www.soundjay.com/button/sounds/button-10.mp3", //yellow
+        "http://www.soundjay.com/button/sounds/button-7.mp3" //blue
+    ];
+
+    //1- start board sequence
+    $(document).ready(function() {
+        $(".display").text("");
+        $(".start").click(function() {
+            strict = false;
+            error = false;
+            level = 0;
+            level++;
+            simonSeq = []
+            userSeq = [];
+            simonSequence();
+        })
+
+        //user pad listener
+        $(".pad").click(function() {
+            id = $(this).attr("id");
+            color = $(this).attr("class").split(" ")[1];
+            userSequence();
+        });
+
+        //strict mode listener
+        $(".strict").click(function() {
+            level = 0;
+            level++;
+            simonSeq = [];
+            userSeq = [];
+            strict = true;
+            simonSequence();
+        });
+
+        //listener for switch button
+        $(".switch").click(function() {
+            gameOn = (gameOn == false) ? true : false;
+            console.log(gameOn);
+            if(gameOn) {
+                $(".inner-switch").addClass("inner-inactive");
+                $(".switch").addClass("outter-active");
+                $(".display").text("00")
+            }
+            else {
+                $(".inner-switch").removeClass("inner-inactive");
+                $(".switch").removeClass("outter-active");
+                $(".display").text("");
+            }
+        })
+    });
+
+    //user sequence
+    function userSequence() {
+        userSeq.push(id);
+        console.log(id+" "+color);
+        addClassSound(id, color);
+        //check user sequence
+        if(!checkUserSeq()) {
+            //if playing strict mode reset everything lol
+            if(strict) {
+                console.log("strict");
+                simonSeq = [];
+                level = 1;
+            }
+            error = true;
+            displayError();
+            userSeq = [];
+            simonSequence();
+        }
+        //checking end of sequence
+        else if(userSeq.length == simonSeq.length && userSeq.length < NUM_OF_LEVELS) {
+            level++;
+            userSeq = [];
+            error = false;
+            console.log("start simon");
+            simonSequence();
+        }
+        //checking for winners
+        if(userSeq.length == NUM_OF_LEVELS) {
+            displayWinner();
+            resetGame();
+        }
+
+    }
+
+    /* simon sequence */
+    function simonSequence() {
+        console.log("level "+level);
+        $(".display").text(level);
+        if(!error) {
+            getRandomNum();
+        }
+        if(error && strict) {
+            getRandomNum();
+        }
+        var i = 0;
+        var myInterval = setInterval(function() {
+            id = simonSeq[i];
+            color = $("#"+id).attr("class");
+            color = color.split(" ")[1];
+            console.log(id+" "+color);
+            addClassSound(id, color);
+            i++;
+            if(i == simonSeq.length) {
+                clearInterval(myInterval);
+            }
+        }, 1000);
+    }
+
+    //generate random number
+    function getRandomNum() {
+        var random = Math.floor(Math.random() * 4);
+        simonSeq.push(random);
+    }
+
+    /* add temporary class and sound  */
+    function addClassSound(id, color) {
+        $("#"+id).addClass(color+"-active");
+        playSound(id)
+        setTimeout(function(){
+            $("#"+id).removeClass(color+"-active");
+        }, 500);
+    }
+
+    /* checking user seq against simon's */
+    function checkUserSeq() {
+        for(var i = 0; i < userSeq.length; i++) {
+            if(userSeq[i] != simonSeq[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /* display error  */
+    function displayError() {
+        console.log("error");
+        var counter = 0;
+        var myError = setInterval(function() {
+            $(".display").text("Err");
+            counter++;
+            if(counter == 3) {
+                $(".display").text(level);
+                clearInterval(myError);
+                userSeq = [];
+                counter = 0;
+            }
+        }, 500);
+    }
+
+    //display winner
+    function displayWinner() {
+        var count = 0;
+        var winInterval = setInterval(function() {
+            count++;
+            $(".display").text("Win");
+            if(count == 5) {
+                clearInterval(winInterval);
+                $(".display").text("00");
+                count = 0;
+            }
+        }, 500);
+    }
+
+    /* play board sound */
+    function playSound(id) {
+        var sound = new Audio(boardSound[id]);
+        sound.play();
+    }
+
+    /* reset game */
+    function resetGame() {
+        userSeq = [];
+        simonSeq = [];
+        level = 0;
+        $(".display").text("00");
+    }
+
+</script>
+
+</body>
+</html>
